@@ -239,7 +239,14 @@
     },
     async retryAll() {
       const recovered = [];
-      for (const adapter of adapters) if (adapter.pending) { await adapter.retry(); recovered.push(adapter); }
+      for (const adapter of adapters) if (adapter.pending) {
+        try {
+          const snapshot = await adapter.retry();
+          recovered.push({ adapter, snapshot });
+        } catch (error) {
+          recovered.push({ adapter, error });
+        }
+      }
       return recovered;
     },
     async exportSnapshot(options) {

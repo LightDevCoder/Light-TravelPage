@@ -473,3 +473,26 @@ test('uncertain request survives expired login and retries the identical body', 
     assert.equal(values.size,0);
   } finally {globalThis.fetch=savedFetch;}
 });
+
+test('batch recovery delivers successful snapshots when another adapter still fails', async () => {
+  const savedFetch=globalThis.fetch;let recovering=false;
+  try {
+    globalThis.fetch=async (url,options)=>{
+      if(options.method==='GET')return Response.json({...emptyState(),revision:0});
+      if(!recovering || url.endsWith('/second'))throw new Error('still offline');
+      return Response.json({...emptyState(),revision:1,todos:[{id:'a',text:'saved',completed:false}]});
+    };
+    const runtime=client();
+    const a=runtime.createD1Adapter({tripId:'first',collections:['todos']});
+    const b=runtime.createD1Adapter({tripId:'second',collections:['todos']});
+    for(const adapter of [a,b]){
+      await adapter.load();
+      await assert.rejects(adapter.applyChange('todos',{id:'a',text:'saved',completed:false}));
+    }
+    recovering=true;
+    const recovered=await runtime.retryAll();
+    assert.equal(recovered[0].adapter,a);assert.equal(recovered[0].snapshot.todos.length,1);
+    assert.equal(recovered[1].adapter,b);assert.match(recovered[1].error.message,/offline/);
+    assert.equal(a.pending,false);assert.equal(b.pending,true);
+  } finally {globalThis.fetch=savedFetch;}
+});

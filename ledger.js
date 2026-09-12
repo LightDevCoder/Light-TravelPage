@@ -1807,8 +1807,10 @@ import { CURRENCY_CATALOG } from "./currencies.js";
       return true;
     },
     async recoverSavedMutation(recovered) {
-      if (!recovered.includes(ledgerAdapter) || !recoveredMutation) return;
-      ledgerData = normalizeData(await ledgerAdapter.load());
+      const confirmed = recovered.find(entry => entry.adapter === ledgerAdapter && entry.snapshot);
+      if (!confirmed || !recoveredMutation) return;
+      // Consume the successful POST snapshot even if a later refresh fails.
+      ledgerData = normalizeData(confirmed.snapshot);
       const changed = recoveredMutation.generation !== draftGeneration;
       if (!changed && typeof recoveredMutation.afterSuccess === "function") recoveredMutation.afterSuccess();
       recoveredMutation = null;
