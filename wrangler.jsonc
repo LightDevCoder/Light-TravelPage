@@ -1,0 +1,16 @@
+{
+  "name": "light-travelpage",
+  "compatibility_date": "2026-09-01",
+  "pages_build_output_dir": "./dist",
+  "vars": {
+    "TRIP_ID": "light-travelpage-demo"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "light-travelpage-demo",
+      "database_id": "4455eecd-4864-4cd4-bd39-2dc31394309c",
+      "migrations_dir": "migrations"
+    }
+  ]
+}

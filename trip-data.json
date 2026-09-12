@@ -1,0 +1,385 @@
+{
+  "schemaVersion": "2.0-lite",
+  "config": {
+    "schemaVersion": "1.0.0",
+    "modules": {
+      "flights": false,
+      "overview": true,
+      "itinerary": true,
+      "todo": true,
+      "driving": false,
+      "ledger": true
+    },
+    "language": "zh-CN",
+    "persistence": {
+      "mode": "d1",
+      "apiBase": "/api/trip",
+      "sharedCollections": [
+        "todos",
+        "tickets",
+        "ledger"
+      ]
+    }
+  },
+  "metadata": {
+    "tripId": "light-travelpage-demo",
+    "title": "Light-TravelPage · 杭州同行演示",
+    "language": "zh-CN",
+    "assets": {
+      "routeMaps": [
+        "assets/maps/templates/template-07-compact-basin.webp"
+      ]
+    },
+    "timeZone": "Asia/Shanghai"
+  },
+  "trip": {
+    "status": "draft",
+    "startDate": "2026-10-01",
+    "endDate": "2026-10-02",
+    "dayCount": 2,
+    "nightCountAway": 1,
+    "countries": [
+      {
+        "code": "CN",
+        "nameZh": "中国",
+        "nameEn": "China"
+      }
+    ],
+    "primaryDestinationCountries": [
+      "CN"
+    ],
+    "citiesAndAreas": [
+      "杭州"
+    ],
+    "routeSummary": "虚构行程，用于验证共享功能",
+    "groupSize": 2,
+    "primaryDestinationName": "杭州 · 同行演示"
+  },
+  "flightJourneys": [],
+  "flights": [],
+  "accommodations": [],
+  "groundTransport": {
+    "rentalCar": null,
+    "rentalChecklist": [],
+    "drivingNotes": [],
+    "drivingReferenceLinks": [],
+    "plannedRoadLegs": [],
+    "publicTransitAndRail": []
+  },
+  "days": [
+    {
+      "day": 1,
+      "date": "2026-10-01",
+      "title": "西湖与博物馆",
+      "locations": [
+        "杭州"
+      ],
+      "schedule": [
+        {
+          "id": "walk-1",
+          "time": "09:00",
+          "type": "walk",
+          "text": "西湖散步（演示）",
+          "placeId": "west-lake"
+        },
+        {
+          "id": "museum-1",
+          "time": "14:00",
+          "type": "attraction",
+          "text": "博物馆参观（虚构预约）",
+          "placeId": "museum",
+          "ticketIds": [
+            "demo-ticket"
+          ]
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "date": "2026-10-02",
+      "title": "自由安排",
+      "locations": [
+        "杭州"
+      ],
+      "schedule": [
+        {
+          "id": "free-2",
+          "time": "10:00",
+          "type": "note",
+          "text": "这是测试行程，不代表真实预订。"
+        }
+      ]
+    }
+  ],
+  "places": [
+    {
+      "id": "west-lake",
+      "name": "西湖",
+      "nameZh": "西湖",
+      "geo": {
+        "lat": 30.243,
+        "lng": 120.15
+      },
+      "countryCode": "CN"
+    },
+    {
+      "id": "museum",
+      "name": "浙江省博物馆",
+      "nameZh": "浙江省博物馆",
+      "geo": {
+        "lat": 30.253,
+        "lng": 120.141
+      },
+      "countryCode": "CN"
+    }
+  ],
+  "restaurants": [],
+  "bookingsAndTickets": [],
+  "ticketPlanning": {
+    "statusStorage": "d1",
+    "statusStorageNote": "Shared with your travel group",
+    "items": [
+      {
+        "id": "demo-ticket",
+        "day": 1,
+        "name": "虚构演示门票",
+        "requirement": "待确认",
+        "document": {
+          "url": "assets/tickets/demo.pdf",
+          "type": "application/pdf",
+          "label": "演示票据 PDF"
+        }
+      }
+    ]
+  },
+  "preTrip": {
+    "packingItems": [
+      {
+        "id": "todo-meeting",
+        "text": "确认集合时间（演示）",
+        "completed": false
+      }
+    ],
+    "preparationsExplicitlyMentioned": [],
+    "missingNote": ""
+  },
+  "mapLinks": {
+    "providedGoogleMapsLinks": [],
+    "note": "",
+    "cityLevelNavigationDisabled": false,
+    "navigationPolicy": {
+      "noNavigationTypes": [
+        "flight",
+        "note",
+        "rest"
+      ],
+      "selfNavigationTypes": [
+        "drive",
+        "return",
+        "transfer",
+        "check-in",
+        "check-out",
+        "restaurant",
+        "attraction",
+        "walk",
+        "hike"
+      ]
+    },
+    "navigationPlaces": []
+  },
+  "issuesAndUncertainties": [],
+  "map": {
+    "schemaVersion": "1.0-lite",
+    "mapMode": "template-auto",
+    "templateId": "auto",
+    "disclaimer": "本图仅表达地点的相对方位与路线顺序，不代表真实比例或精确地理边界。",
+    "places": [
+      {
+        "id": "west-lake",
+        "name": "西湖",
+        "nameZh": "西湖",
+        "geo": {
+          "lat": 30.243,
+          "lng": 120.15
+        },
+        "countryCode": "CN"
+      },
+      {
+        "id": "museum",
+        "name": "浙江省博物馆",
+        "nameZh": "浙江省博物馆",
+        "geo": {
+          "lat": 30.253,
+          "lng": 120.141
+        },
+        "countryCode": "CN"
+      }
+    ],
+    "routes": [
+      {
+        "day": 1,
+        "placeIds": [
+          "west-lake",
+          "museum"
+        ]
+      }
+    ],
+    "dailyRoutes": [
+      {
+        "day": 1,
+        "placeIds": [
+          "west-lake",
+          "museum"
+        ]
+      }
+    ],
+    "region": {
+      "id": "hangzhou",
+      "label": "杭州",
+      "countryCode": "CN"
+    }
+  },
+  "routeMap": {
+    "defaultRegionId": "hangzhou",
+    "regions": [
+      {
+        "id": "hangzhou",
+        "label": "杭州",
+        "countryCode": "CN",
+        "scope": "template-schematic",
+        "mapMode": "frozen-template",
+        "templateId": "compact-basin",
+        "mapModeReason": "explicit-diy-override",
+        "mapModeMetrics": {
+          "placeCount": 2,
+          "geoPlaceCount": 2,
+          "widthKm": 0.86,
+          "heightKm": 1.11,
+          "spanKm": 1.41,
+          "averageNearestKm": 1.41,
+          "components": 1,
+          "largestLegKm": 1.41,
+          "jumpRatio": 1
+        },
+        "days": [
+          1
+        ],
+        "canvas": {
+          "width": 1448,
+          "height": 1086
+        },
+        "projection": {
+          "type": "relative-schematic",
+          "bounds": null
+        },
+        "baseImage": "assets/maps/templates/template-07-compact-basin.webp",
+        "title": "杭州 · 旅行路线",
+        "ariaLabel": "杭州模板化旅行路线示意图，共1天",
+        "disclaimer": "本图仅表达地点的相对方位与路线顺序，不代表真实比例或精确地理边界。",
+        "heading": {
+          "text": "杭州",
+          "x": 33,
+          "y": 105,
+          "size": 40
+        },
+        "legend": {
+          "x": 35,
+          "y": 168,
+          "gap": 43
+        },
+        "annotations": [],
+        "routes": [
+          {
+            "day": 1,
+            "color": "#397dc1",
+            "placeIds": [
+              "west-lake",
+              "museum"
+            ],
+            "paths": [
+              "M882.34 733.8 C748.3 610.2 637.9 468.2 557.66 316.2"
+            ],
+            "overviewPaths": [
+              "M882.34 733.8 C748.3 610.2 637.9 468.2 557.66 316.2"
+            ]
+          }
+        ],
+        "places": [
+          {
+            "id": "west-lake",
+            "x": 882.34,
+            "y": 733.8,
+            "color": "#397dc1",
+            "tx": 914.34,
+            "ty": 701.8,
+            "size": 24,
+            "anchor": "start",
+            "lines": [
+              "西湖"
+            ],
+            "query": "西湖 杭州",
+            "geo": {
+              "lat": 30.243,
+              "lng": 120.15
+            },
+            "days": [
+              1
+            ]
+          },
+          {
+            "id": "museum",
+            "x": 557.66,
+            "y": 316.2,
+            "color": "#397dc1",
+            "tx": 525.66,
+            "ty": 284.2,
+            "size": 24,
+            "anchor": "end",
+            "lines": [
+              "浙江省博物馆"
+            ],
+            "query": "浙江省博物馆 杭州",
+            "geo": {
+              "lat": 30.253,
+              "lng": 120.141
+            },
+            "days": [
+              1
+            ]
+          }
+        ],
+        "overviewPlaceIds": [
+          "west-lake",
+          "museum"
+        ],
+        "dailyLayouts": {
+          "1": {
+            "places": [
+              "west-lake",
+              "museum"
+            ],
+            "labels": {
+              "west-lake": {
+                "x": 914.34,
+                "y": 701.8,
+                "anchor": "start"
+              },
+              "museum": {
+                "x": 525.66,
+                "y": 284.2,
+                "anchor": "end"
+              }
+            },
+            "transport": [
+              {
+                "items": [],
+                "x": 720,
+                "y": 525
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
