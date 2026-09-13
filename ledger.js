@@ -1114,6 +1114,7 @@ import { CURRENCY_CATALOG } from "./currencies.js";
     return enqueueMutation(async () => {
       const next = deepClone(ledgerData);
       const generation = draftGeneration;
+      const alreadyPending = ledgerAdapter.pending;
       mutator(next);
       next.version = STORAGE_VERSION;
       next.updatedAt = new Date().toISOString();
@@ -1129,7 +1130,7 @@ import { CURRENCY_CATALOG } from "./currencies.js";
         }));
         return true;
       } catch (error) {
-        if (ledgerAdapter.pending) recoveredMutation = {generation, afterSuccess: options.afterSuccess};
+        if (ledgerAdapter.pending && !alreadyPending) recoveredMutation = {generation, afterSuccess: options.afterSuccess};
         if (error.status === 409) {
           // Rebase the observed revision without replacing the active form. The next
           // user save applies their retained fields to the fresh server snapshot.

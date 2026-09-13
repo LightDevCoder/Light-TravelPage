@@ -15,7 +15,7 @@ async function setup(t) {
   window.document.body.innerHTML = '<div id="ledger-root"></div>';
   let remote = initial(), fail = null, calls = 0;
   const adapter = {mode:'d1',pending:false, load:async()=>structuredClone(remote),
-    save:async(next)=>{calls++; if(fail) {const error=fail; fail=null; throw error;} remote=structuredClone(next);}};
+    save:async(next)=>{calls++; if(fail) {adapter.pending=!fail.status || fail.status>=500; const error=fail; fail=null; throw error;} remote=structuredClone(next);}};
   window.eval(source);
   await window.TravelLedger.init({root:'#ledger-root',tripId:'test',config:{},repository:adapter});
   const $ = selector => window.document.querySelector(selector);
@@ -56,7 +56,6 @@ test('failed bill retry preserves newer edits and clears only the submitted draf
   h.input('[name="originalAmount"]','20');
   h.$('[name="payerId"][value="alice"]').checked=true;
   h.$('[name="participantIds"]').checked=true;
-  h.adapter.pending=true;
   h.fail=new Error('Connection lost');
   await h.submit('[data-ledger-form="bill"]');
   assert.equal(h.calls,1);
@@ -64,7 +63,6 @@ test('failed bill retry preserves newer edits and clears only the submitted draf
   h.adapter.pending=false;
   await h.window.TravelLedger.recoverSavedMutation([{adapter:h.adapter,snapshot:h.remote}]);
   assert.equal(h.$('[name="originalAmount"]').value,'25');
-  h.adapter.pending=true;
   h.fail=new Error('Connection lost');
   await h.submit('[data-ledger-form="bill"]');
   h.adapter.pending=false;
@@ -76,7 +74,7 @@ test('member retry preserves newer DOM input and refreshes saved members after c
   const h=await setup(t);
   h.$('[data-ledger-action="open-members"]').click();
   h.input('[data-ledger-form="member-add"] input[name="name"]','Bob');
-  h.adapter.pending=true;h.fail=new Error('lost response');
+  h.fail=new Error('lost response');
   await h.submit('[data-ledger-form="member-add"]');
   h.input('[data-ledger-form="member-add"] input[name="name"]','Bobby');
   h.remote.travelers.push({id:'bob',name:'Bob',color:'#123456'});
@@ -93,7 +91,7 @@ test('unchanged member retry renders the confirmed server snapshot immediately',
   const h=await setup(t);
   h.$('[data-ledger-action="open-members"]').click();
   h.input('[data-ledger-form="member-add"] input[name="name"]','Bob');
-  h.adapter.pending=true;h.fail=new Error('lost response');
+  h.fail=new Error('lost response');
   await h.submit('[data-ledger-form="member-add"]');
   h.remote.travelers.push({id:'bob',name:'Bob',color:'#123456'});
   h.adapter.pending=false;
@@ -105,7 +103,7 @@ test('confirmed retry is consumed even when subsequent GET fails', async t => {
   const h=await setup(t);
   h.input('[name="originalAmount"]','20');
   h.$('[name="payerId"][value="alice"]').checked=true;
-  h.adapter.pending=true;h.fail=new Error('lost response');
+  h.fail=new Error('lost response');
   await h.submit('[data-ledger-form="bill"]');
   h.remote.bills.push({id:'confirmed',currency:'CNY',originalAmountCents:2000,baseAmountCents:2000,payerId:'alice',participantIds:['alice'],category:'餐饮'});
   h.adapter.pending=false;
@@ -117,4 +115,19 @@ test('confirmed retry is consumed even when subsequent GET fails', async t => {
   await h.submit('[data-ledger-form="bill"]');
   assert.equal(h.calls,1);
   assert.equal(h.remote.bills.length,1);
+});
+
+test('save rejected by pending guard cannot replace the original recovery draft generation', async t => {
+  const h=await setup(t);
+  h.input('[name="originalAmount"]','20');
+  h.$('[name="payerId"][value="alice"]').checked=true;
+  h.adapter.save=async()=>{h.adapter.pending=true;throw new Error('uncertain or pending');};
+  await h.submit('[data-ledger-form="bill"]');
+  h.input('[name="originalAmount"]','25');
+  await h.submit('[data-ledger-form="bill"]');
+  h.remote.bills.push({id:'confirmed',currency:'CNY',originalAmountCents:2000,baseAmountCents:2000,payerId:'alice',participantIds:['alice'],category:'餐饮'});
+  h.adapter.pending=false;
+  await h.window.TravelLedger.recoverSavedMutation([{adapter:h.adapter,snapshot:h.remote}]);
+  assert.equal(h.$('[name="originalAmount"]').value,'25');
+  assert.equal(h.window.TravelLedger.getSnapshot().bills[0].id,'confirmed');
 });
