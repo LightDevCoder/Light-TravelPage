@@ -1,0 +1,28 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {Window} from 'happy-dom';
+test('switch language in place without resetting form, user text or expanded state',async t=>{
+ const w=new Window({url:'http://localhost/'});t.after(()=>w.happyDOM.abort());
+ w.document.body.innerHTML='<button id="language-toggle">中文 / EN</button><h2>航班行程</h2><details open><input value="unsent"><span data-no-translate>交通</span><p class="day-title">尚无译文</p></details>';
+ w.confirm=()=>false;
+ w.eval(readFileSync(new URL('../i18n.js',import.meta.url),'utf8'));
+ w.TravelI18n.setLanguage('en');
+ assert.equal(w.document.querySelector('h2').textContent,'Flights');
+ assert.equal(w.document.querySelector('input').value,'unsent');
+ assert.equal(w.document.querySelector('span').textContent,'交通');
+ assert.equal(w.document.querySelector('details').open,true);
+ assert.match(w.document.querySelector('.day-title').textContent,/Chinese only/);
+ w.TravelI18n.setLanguage('zh-CN');assert.equal(w.document.querySelector('h2').textContent,'航班行程');
+ w.TravelI18n.setLanguage('en');w.document.querySelector('h2').textContent='住宿安排';await new Promise(r=>setTimeout(r,5));
+ assert.equal(w.document.querySelector('h2').textContent,'Stays');
+});
+test('authored missing translations retain both source languages including blank entries', t=>{
+ const w=new Window({url:'http://localhost/'});t.after(()=>w.happyDOM.abort());w.confirm=()=>false;
+ w.eval(readFileSync(new URL('../i18n.js',import.meta.url),'utf8'));
+ w.TravelI18n.addTranslations({'Morning walk':{'zh-CN':''},'早间散步':{en:''}});
+ w.TravelI18n.setLanguage('zh-CN');
+ assert.equal(w.TravelI18n.text('Morning walk',true),'Morning walk（暂无中文）');
+ w.TravelI18n.setLanguage('en');
+ assert.equal(w.TravelI18n.text('早间散步',true),'早间散步 (Chinese only)');
+});

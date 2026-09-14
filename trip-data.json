@@ -3,12 +3,13 @@
   "config": {
     "schemaVersion": "1.0.0",
     "modules": {
-      "flights": false,
+      "flights": true,
       "overview": true,
       "itinerary": true,
       "todo": true,
       "driving": false,
-      "ledger": true
+      "ledger": true,
+      "accommodations": true
     },
     "language": "zh-CN",
     "persistence": {
@@ -19,7 +20,8 @@
         "tickets",
         "ledger"
       ]
-    }
+    },
+    "demo": true
   },
   "metadata": {
     "tripId": "light-travelpage-demo",
@@ -55,9 +57,118 @@
     "groupSize": 2,
     "primaryDestinationName": "杭州 · 同行演示"
   },
-  "flightJourneys": [],
-  "flights": [],
-  "accommodations": [],
+  "flightJourneys": [
+    {
+      "id": "demo-outbound",
+      "title": "跨日中转示例",
+      "demo": true,
+      "ticketIds": [
+        "demo-ticket"
+      ]
+    },
+    {
+      "id": "demo-return",
+      "title": "返程航班待补充",
+      "placeholder": true,
+      "status": "pending",
+      "demo": true,
+      "missingFields": [
+        "flightNumber",
+        "departure",
+        "arrival"
+      ]
+    }
+  ],
+  "flights": [
+    {
+      "id": "demo-flight-1",
+      "journeyId": "demo-outbound",
+      "sequence": 1,
+      "airline": {
+        "name": "虚构示例航空"
+      },
+      "flightNumber": "DEMO-101",
+      "departure": {
+        "airportCode": "LHR",
+        "city": "伦敦",
+        "date": "2026-09-30",
+        "time": "13:00",
+        "utcOffset": "+01:00",
+        "placeId": "lhr"
+      },
+      "arrival": {
+        "airportCode": "ICN",
+        "city": "仁川",
+        "date": "2026-10-01",
+        "time": "09:00",
+        "utcOffset": "+09:00",
+        "placeId": "icn"
+      }
+    },
+    {
+      "id": "demo-flight-2",
+      "journeyId": "demo-outbound",
+      "sequence": 2,
+      "airline": {
+        "name": "虚构示例航空"
+      },
+      "flightNumber": "DEMO-102",
+      "departure": {
+        "airportCode": "ICN",
+        "city": "仁川",
+        "date": "2026-10-01",
+        "time": "11:00",
+        "utcOffset": "+09:00",
+        "placeId": "icn"
+      },
+      "arrival": {
+        "airportCode": "HGH",
+        "city": "杭州",
+        "date": "2026-10-01",
+        "time": "12:30",
+        "utcOffset": "+08:00",
+        "placeId": "hgh"
+      }
+    }
+  ],
+  "accommodations": [
+    {
+      "id": "demo-stay",
+      "name": "湖畔示例酒店（虚构）",
+      "address": "示例地址，不可用于导航",
+      "placeId": "west-lake",
+      "status": "unconfirmed",
+      "demo": true,
+      "checkIn": "2026-10-01",
+      "checkOut": "2026-10-02",
+      "checkInTime": "18:00",
+      "checkOutTime": "11:00",
+      "roomType": "双床房（演示）",
+      "price": {
+        "currency": "CNY",
+        "amount": 600
+      },
+      "confirmationNumber": "DEMO-NOT-A-BOOKING",
+      "cancellationPolicy": "入住前一天可取消（虚构条款）",
+      "ticketIds": [
+        "demo-ticket"
+      ],
+      "navigationNote": "演示导航目标为西湖公共景区，不是酒店位置。"
+    },
+    {
+      "id": "demo-stay-pending",
+      "name": "备选住宿待补充",
+      "status": "pending",
+      "demo": true,
+      "checkIn": null,
+      "checkOut": null,
+      "missingFields": [
+        "入住日期",
+        "退房日期",
+        "酒店名称与地址"
+      ]
+    }
+  ],
   "groundTransport": {
     "rentalCar": null,
     "rentalChecklist": [],
@@ -77,20 +188,28 @@
       "schedule": [
         {
           "id": "walk-1",
-          "time": "09:00",
+          "time": "14:00",
           "type": "walk",
           "text": "西湖散步（演示）",
           "placeId": "west-lake"
         },
         {
           "id": "museum-1",
-          "time": "14:00",
+          "time": "15:30",
           "type": "attraction",
           "text": "博物馆参观（虚构预约）",
           "placeId": "museum",
           "ticketIds": [
             "demo-ticket"
           ]
+        },
+        {
+          "id": "demo-checkin",
+          "time": "18:00",
+          "type": "check-in",
+          "text": "虚构酒店入住示例",
+          "accommodationId": "demo-stay",
+          "placeId": "west-lake"
         }
       ]
     },
@@ -102,6 +221,13 @@
         "杭州"
       ],
       "schedule": [
+        {
+          "id": "demo-transfer",
+          "time": "09:00",
+          "type": "transfer",
+          "text": "接驳车示例：市区前往机场，班次待确认",
+          "placeId": "hgh"
+        },
         {
           "id": "free-2",
           "time": "10:00",
@@ -120,7 +246,8 @@
         "lat": 30.243,
         "lng": 120.15
       },
-      "countryCode": "CN"
+      "countryCode": "CN",
+      "cityOrArea": "杭州"
     },
     {
       "id": "museum",
@@ -130,7 +257,52 @@
         "lat": 30.253,
         "lng": 120.141
       },
-      "countryCode": "CN"
+      "countryCode": "CN",
+      "cityOrArea": "杭州"
+    },
+    {
+      "id": "hgh",
+      "name": "杭州萧山国际机场",
+      "localName": "杭州萧山国际机场",
+      "countryCode": "CN",
+      "cityOrArea": "杭州"
+    },
+    {
+      "id": "icn",
+      "name": "仁川国际机场",
+      "localName": "인천국제공항",
+      "countryCode": "KR",
+      "cityOrArea": "인천"
+    },
+    {
+      "id": "lhr",
+      "name": "伦敦希思罗机场",
+      "localName": "Heathrow Airport",
+      "countryCode": "GB",
+      "cityOrArea": "London"
+    },
+    {
+      "id": "gyeongbokgung",
+      "name": "景福宫",
+      "localName": "경복궁",
+      "countryCode": "KR",
+      "cityOrArea": "서울",
+      "address": "서울 종로구 사직로 161"
+    },
+    {
+      "id": "bolshoi",
+      "name": "莫斯科大剧院",
+      "localName": "Большой театр",
+      "countryCode": "RU",
+      "cityOrArea": "Москва"
+    },
+    {
+      "id": "british-museum",
+      "name": "大英博物馆",
+      "localName": "British Museum",
+      "countryCode": "GB",
+      "cityOrArea": "London",
+      "address": "Great Russell Street, London WC1B 3DG"
     }
   ],
   "restaurants": [],
@@ -381,5 +553,115 @@
         }
       }
     ]
+  },
+  "demoNavigationPlaceIds": [
+    "west-lake",
+    "gyeongbokgung",
+    "bolshoi",
+    "british-museum"
+  ],
+  "translations": {
+    "Light-TravelPage · 杭州同行演示": {
+      "en": "Light-TravelPage · Hangzhou group demo"
+    },
+    "西湖与博物馆": {
+      "en": "West Lake and museum"
+    },
+    "自由安排": {
+      "en": "Free time"
+    },
+    "杭州": {
+      "en": "Hangzhou"
+    },
+    "杭州 · 同行演示": {
+      "en": "Hangzhou · Group demo"
+    },
+    "西湖": {
+      "en": "West Lake"
+    },
+    "浙江省博物馆": {
+      "en": "Zhejiang Provincial Museum"
+    },
+    "西湖散步（演示）": {
+      "en": "West Lake walk (demo)"
+    },
+    "博物馆参观（虚构预约）": {
+      "en": "Museum visit (fictional booking)"
+    },
+    "这是测试行程，不代表真实预订。": {
+      "en": "Test itinerary; not a real booking."
+    },
+    "虚构演示门票": {
+      "en": "Fictional demo ticket"
+    },
+    "演示票据 PDF": {
+      "en": "Demo ticket PDF"
+    },
+    "虚构行程，用于验证共享功能": {
+      "en": "Fictional trip for testing shared features"
+    },
+    "本图仅表达地点的相对方位与路线顺序，不代表真实比例或精确地理边界。": {
+      "en": "Schematic route only, not to scale or exact geographic boundaries."
+    },
+    "跨日中转示例": {
+      "en": "Overnight connection example"
+    },
+    "返程航班待补充": {
+      "en": "Return flight pending"
+    },
+    "虚构示例航空": {
+      "en": "Fictional Demo Airline"
+    },
+    "伦敦": {
+      "en": "London"
+    },
+    "仁川": {
+      "en": "Incheon"
+    },
+    "虚构酒店入住示例": {
+      "en": "Fictional hotel check-in example"
+    },
+    "接驳车示例：市区前往机场，班次待确认": {
+      "en": "Example shuttle: city to airport; service pending"
+    },
+    "湖畔示例酒店（虚构）": {
+      "en": "Lakeside Demo Hotel (fictional)"
+    },
+    "双床房（演示）": {
+      "en": "Twin room (demo)"
+    },
+    "入住前一天可取消（虚构条款）": {
+      "en": "Cancellation until the day before check-in (fictional terms)"
+    },
+    "演示导航目标为西湖公共景区，不是酒店位置。": {
+      "en": "Demo navigation points to the public West Lake area, not a hotel."
+    },
+    "备选住宿待补充": {
+      "en": "Alternative stay pending"
+    },
+    "酒店名称与地址": {
+      "en": "Hotel name and address"
+    },
+    "示例地址，不可用于导航": {
+      "en": "Example address; not for navigation"
+    },
+    "杭州萧山国际机场": {
+      "en": "Hangzhou Xiaoshan International Airport"
+    },
+    "仁川国际机场": {
+      "en": "Incheon International Airport"
+    },
+    "伦敦希思罗机场": {
+      "en": "London Heathrow Airport"
+    },
+    "景福宫": {
+      "en": "Gyeongbokgung Palace"
+    },
+    "莫斯科大剧院": {
+      "en": "Bolshoi Theatre"
+    },
+    "大英博物馆": {
+      "en": "British Museum"
+    }
   }
 }
