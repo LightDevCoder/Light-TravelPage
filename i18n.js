@@ -361,7 +361,7 @@
   let content={};
   let authoredText=new Set();
   const protectedSelector='[data-no-translate],script,style,textarea,.ledger-avatar,.ledger-person-name,.todo-text';
-  const authoredSelector='.day-title,.schedule-text,.detail-note,.day-locations,.flight-stop__city,.stay-card h3,.stay-card dd';
+  const authoredSelector='[data-authored],.day-title,.schedule-text,.detail-note,.day-locations,.flight-stop__city,.stay-card h3,.stay-card dd';
   let keys=Object.keys(messages).sort((a,b)=>b.length-a.length);
   let pattern=new RegExp(keys.map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
   function text(value, authored=false){

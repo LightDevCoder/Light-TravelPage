@@ -26,3 +26,17 @@ test('authored missing translations retain both source languages including blank
  w.TravelI18n.setLanguage('en');
  assert.equal(w.TravelI18n.text('早间散步',true),'早间散步 (Chinese only)');
 });
+test('actual stay cards mark missing cancellation and navigation translations both ways', t=>{
+ const w=new Window({url:'http://localhost/'});t.after(()=>w.happyDOM.abort());w.confirm=()=>false;
+ w.document.body.innerHTML='<div id="accommodation-cards"></div>';
+ for(const file of ['i18n.js','travel-cards.js'])w.eval(readFileSync(new URL('../'+file,import.meta.url),'utf8'));
+ const data={config:{modules:{accommodations:true}},places:[],ticketPlanning:{items:[]},accommodations:[{id:'test',name:'酒店',cancellationPolicy:'Free cancellation until 18:00',navigationNote:'Meet at the north entrance'}]};
+ w.document.dispatchEvent(new w.CustomEvent('travel-data-ready',{detail:data}));
+ w.TravelI18n.setLanguage('zh-CN');
+ assert.match(w.document.body.textContent,/Free cancellation until 18:00（暂无中文）/);
+ assert.match(w.document.body.textContent,/Meet at the north entrance（暂无中文）/);
+ data.accommodations[0].cancellationPolicy='入住前免费取消';
+ w.document.dispatchEvent(new w.CustomEvent('travel-data-ready',{detail:data}));
+ w.TravelI18n.setLanguage('en');
+ assert.match(w.document.body.textContent,/入住前免费取消 \(Chinese only\)/);
+});
