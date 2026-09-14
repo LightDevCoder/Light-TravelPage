@@ -53,16 +53,15 @@
 }
 
 .travel-navigation-menu {
-  position: fixed;
+  position: absolute;
   z-index: 40;
-  top: calc(54px + var(--safe-top));
-  left: 14px;
-  right: 14px;
-  width: min(420px, calc(100vw - 28px));
-  margin-inline: auto;
+  top: calc(100% + 6px);
+  right: 0;
+  width: min(176px, calc(100vw - 28px));
+  margin: 0;
   padding: 9px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
+  grid-template-columns: 1fr;
   gap: 5px;
   border: 1px solid rgba(19, 38, 47, .1);
   border-radius: 15px;
