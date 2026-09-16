@@ -348,6 +348,8 @@
   "进入旅程": "Open trip",
   "访问码不正确，请重试。": "Incorrect access code. Please retry.",
   "同行入口": "Group sign-in",
+  "演示访问码：demo（已预填，直接点击进入）": "Demo access code: demo (prefilled, click to enter)",
+  "演示访问码：demo": "Demo access code: demo",
   "请重新登录旅行小组。": "Please sign in to the travel group again."
 };
 
