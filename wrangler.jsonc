@@ -9,7 +9,7 @@
     {
       "binding": "DB",
       "database_name": "light-travelpage-demo",
-      "database_id": "4455eecd-4864-4cd4-bd39-2dc31394309c",
+      "database_id": "3d303d03-9787-462f-aed9-72d9b59e03ce",
       "migrations_dir": "migrations"
     }
   ]

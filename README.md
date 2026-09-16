@@ -4,7 +4,7 @@ A fictional Hangzhou travel page used to verify the reusable `light-travelpage` 
 
 Hosted at https://light-travelpage.pages.dev. A group access code is required. Runtime data is stored in Cloudflare D1 and shared by group members: travelers, bills, currency settings, tasks and ticket status. There is one equal-access travel group per deployment. The map is schematic.
 
-This private repository contains only fictional itinerary and ticket examples. Access codes, signing secrets and local recovery files are excluded. Retrieve access material from the local project owner's protected file, not from this repository.
+This repository contains only fictional itinerary and ticket examples. Access codes, signing secrets and local recovery files are excluded. Retrieve access material from the local project owner's protected file, not from this repository.
 
 ## Development and deployment
 
