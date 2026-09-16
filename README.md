@@ -1,4 +1,4 @@
-# Light-TravelPage
+# Light-TravelPage-Demo
 
 A fictional Hangzhou travel page used to verify the reusable `light-travelpage` Skill.
 
